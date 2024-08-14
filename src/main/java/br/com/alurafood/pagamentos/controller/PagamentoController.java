@@ -22,6 +22,7 @@ public class PagamentoController {
     @Autowired
     private PagamentoService service;
 
+    @GetMapping
     public Page<PagamentoDto> listar(@PageableDefault(size=10) Pageable paginacao) {
         return service.obterTodos(paginacao);
     }
