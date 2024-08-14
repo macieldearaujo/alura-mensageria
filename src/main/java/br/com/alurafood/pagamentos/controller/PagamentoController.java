@@ -22,7 +22,7 @@ public class PagamentoController {
     @Autowired
     private PagamentoService service;
 
-    public Page<PagamentoDto> listarTodos(@PageableDefault(size=10) Pageable paginacao) {
+    public Page<PagamentoDto> listar(@PageableDefault(size=10) Pageable paginacao) {
         return service.obterTodos(paginacao);
     }
 
@@ -37,5 +37,17 @@ public class PagamentoController {
         service.criarPagamento(pagamentoDto);
         URI endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamentoDto.getId()).toUri();
         return ResponseEntity.created(endereco).body(pagamentoDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<PagamentoDto> atualizar(@RequestParam @NotNull Long id, @RequestBody @Valid PagamentoDto dto) {
+        PagamentoDto pagamentoDto = service.atualizarPagamento(id, dto);
+        return ResponseEntity.ok(pagamentoDto);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<PagamentoDto> deletar(@RequestParam Long id) {
+        service.excluirPagamento(id);
+        return ResponseEntity.noContent().build();
     }
 }
